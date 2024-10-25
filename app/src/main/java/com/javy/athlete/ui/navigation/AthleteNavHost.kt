@@ -24,11 +24,15 @@ fun AthleteNavHost() {
         startDestination = SPLASH_SCREEN
     ) {
         slideInOutComposable(route = SPLASH_SCREEN) {
-            LaunchScreen(navigateToHomeScreen = { navController.navigate(HOME_SCREEN) })
+            LaunchScreen(
+                navigateToHomeScreen = { navController.navigate(HOME_SCREEN) }
+            )
         }
+
         composable(route = HOME_SCREEN) {
             HomeScreen()
         }
+
         slideInOutComposable(
             route = AUTHENTICATION_SCREEN,
             deepLinks = listOf(navDeepLink {

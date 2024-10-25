@@ -1,12 +1,15 @@
 package com.javy.athlete.di
 
+import android.content.Context
 import com.javy.athlete.BuildConfig
 import com.javy.athlete.data.source.remote.rest.OauthInterceptor
+import com.javy.athlete.data.source.remote.rest.TokenManager
 import com.javy.athlete.data.source.remote.rest.service.AthleteApiService
 import com.javy.athlete.data.source.remote.rest.service.OauthApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -21,8 +24,14 @@ object RESTModule {
 
     @Singleton
     @Provides
-    fun provideOauthInterceptor(): OauthInterceptor {
-        return OauthInterceptor()
+    fun provideTokenManager(@ApplicationContext context: Context): TokenManager {
+        return TokenManager(context)
+    }
+
+    @Singleton
+    @Provides
+    fun provideOauthInterceptor(tokenManager: TokenManager): OauthInterceptor {
+        return OauthInterceptor(tokenManager)
     }
 
     @Singleton

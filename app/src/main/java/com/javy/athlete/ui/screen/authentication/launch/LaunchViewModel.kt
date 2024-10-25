@@ -19,7 +19,7 @@ class LaunchViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(LaunchUIState())
     val uiState = _uiState.asStateFlow()
 
-    fun fetchAthlete() {
+    fun fetchAthlete(navigateToHomeScreen: () -> Unit) {
         viewModelScope.launch {
             runCatching {
                 repository.athlete()
@@ -37,11 +37,15 @@ class LaunchViewModel @Inject constructor(
                     }
                 }
             }.onSuccess { athlete ->
-                _uiState.update {
-                    it.copy(
-                        isLoading = false,
-                        isAuthenticated = athlete != null
-                    )
+                athlete?.let {
+                    navigateToHomeScreen()
+                } ?: run {
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            isAuthenticated = false
+                        )
+                    }
                 }
             }
         }

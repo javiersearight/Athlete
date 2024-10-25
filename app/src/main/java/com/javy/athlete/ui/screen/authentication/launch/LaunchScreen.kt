@@ -13,13 +13,16 @@ import com.javy.athlete.ui.common.LoadingIndicator
 
 @Composable
 fun LaunchScreen(navigateToHomeScreen: () -> Unit) {
+
     val viewModel: LaunchViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsState()
 
     val context = LocalContext.current
 
     LaunchedEffect(true) {
-        viewModel.fetchAthlete()
+        viewModel.fetchAthlete {
+            navigateToHomeScreen()
+        }
     }
 
     with(uiState) {

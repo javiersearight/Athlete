@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.material3.Text
 import com.javy.athlete.ui.navigation.AthleteNavHost
 import com.javy.athlete.ui.theme.AthleteTheme
 import dagger.hilt.android.AndroidEntryPoint

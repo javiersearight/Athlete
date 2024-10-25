@@ -13,13 +13,13 @@ import javax.inject.Inject
 
 class AthleteRemoteDataSource @Inject constructor(private val apiService: AthleteApiService) {
 
-    suspend fun athlete(): AthleteRemote? {
+    suspend fun athlete(): Athlete? {
         val response = apiService.athlete()
 
         if (response.code() == 401) {
             return null
         }
-        return response.body()
+        return response.body()?.athlete()
     }
 
     suspend fun athleteAndStats(): Flow<Athlete> {
@@ -28,10 +28,11 @@ class AthleteRemoteDataSource @Inject constructor(private val apiService: Athlet
             val athleteRemote = athleteResponse.body()
             athleteRemote?.let {
                 val athlete = it.athlete()
-                emit(athlete)
+//                emit(athlete)
 
                 val statsResponse = apiService.athleteStats(athlete.id.toString())
-                val statsRemote = statsResponse.body()
+                val statsRemote: StatsRemote? = statsResponse.body()
+                athlete.stats
                 statsRemote?.let { nullSafeStats ->
                     val athleteAndStats = athlete.copy(stats = nullSafeStats.stats())
                     emit(athleteAndStats)
